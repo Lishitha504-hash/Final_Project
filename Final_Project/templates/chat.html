@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agri Chatbot</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg">
+<div class="chat-container">
+  <header class="chat-header">
+    <div><h2>🌾 Agri Chatbot</h2></div>
+    <div class="user-info">Welcome, <strong>{{ username }}</strong> — <a href="{{ url_for('logout') }}">Logout</a></div>
+  </header>
+
+  <div id="chat-box" class="chat-box">
+    {% for c in chats %}
+      <div class="chat-row">
+        <div class="user-msg">👤 {{ c.message }}</div>
+        <div class="bot-msg">🤖 {{ c.response }}</div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <form id="chat-form" class="chat-form">
+    <select id="lang" name="lang">
+      <option value="en">English</option>
+      <option value="ta">தமிழ்</option>
+      <option value="hi">हिन्दी</option>
+      <option value="te">తెలుగు</option>
+        <option value="ml">മലയാളം</option>
+    </select>
+    <input id="message" name="message" placeholder="Ask about crops, soil, pests..." autocomplete="off" required>
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<script>
+$(function(){
+  const chatBox = $("#chat-box");
+  $("#chat-form").on("submit", function(e){
+    e.preventDefault();
+    const text = $("#message").val().trim();
+    const lang = $("#lang").val();
+    if(!text) return;
+    // append user
+    chatBox.append(`<div class="user-msg">👤 ${$('<div>').text(text).html()}</div>`);
+    $("#message").val("");
+    chatBox.scrollTop(chatBox[0].scrollHeight);
+
+    $.post("/chat", { message: text, lang: lang }, function(data){
+      chatBox.append(`<div class="bot-msg">🌾 ${$('<div>').text(data.response).html()}</div>`);
+      chatBox.scrollTop(chatBox[0].scrollHeight);
+    }, "json").fail(function(){
+      chatBox.append(`<div class="bot-msg">🌾 Sorry, something went wrong.</div>`);
+      chatBox.scrollTop(chatBox[0].scrollHeight);
+    });
+  });
+});
+</script>
+</body>
+</html>

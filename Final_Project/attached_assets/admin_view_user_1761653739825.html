@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-view-user">
+  <h2>👤 User Details</h2>
+
+  <div class="user-info">
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Name:</strong> {{ user.name }}</p>
+    <p><strong>Role:</strong> {{ user.role }}</p>
+    <p><strong>Primary Crop:</strong> {{ user.primary_crop or '—' }}</p>
+    <p><strong>Region:</strong> {{ user.region or '—' }}</p>
+    <p><strong>Preferred Language:</strong>
+      {% if user.preferred_language == 'en' %} English
+      {% elif user.preferred_language == 'hi' %} Hindi
+      {% elif user.preferred_language == 'ta' %} Tamil
+      {% elif user.preferred_language == 'te' %} Telugu
+      {% elif user.preferred_language == 'kn' %} Kannada
+      {% else %} Not Set
+      {% endif %}
+    </p>
+  </div>
+
+  <hr>
+
+  <h3>💬 Chat History</h3>
+  {% if chats %}
+    <div class="chat-history">
+      {% for c in chats %}
+        <div class="chat-item">
+          <p><b>You:</b> {{ c.user_message }}</p>
+          <p><b>Bot:</b> {{ c.bot_response }}</p>
+          <p class="timestamp">{{ c.created_at.strftime('%Y-%m-%d %H:%M:%S') if c.created_at else '' }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No chats found for this user.</p>
+  {% endif %}
+
+  <a href="{{ url_for('admin_dashboard') }}" class="btn">← Back to Admin Dashboard</a>
+</div>
+{% endblock %}
