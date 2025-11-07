@@ -38,5 +38,3 @@ AgroBot is an AI-based farming assistant that helps farmers identify **crop dise
 
 
 
-## 📂 Project Structure (Example)
-
