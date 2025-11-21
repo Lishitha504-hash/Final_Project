@@ -1,0 +1,118 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<div style="text-align: center; margin-bottom: 32px;">
+  <h2 style="color: var(--primary-dark); font-size: 32px; margin-bottom: 12px;">🛠️ Admin Dashboard</h2>
+  <p style="color: var(--text-light);">Manage knowledge base, users, and monitor system activity</p>
+</div>
+
+<!-- Admin Grid -->
+<div class="admin-grid">
+  <!-- Knowledge Base Section -->
+  <section class="admin-kb">
+    <h3>📚 Knowledge Base Management</h3>
+    <form method="post" action="{{ url_for('admin_edit_kb') }}">
+      <label style="display: block; margin-bottom: 12px; color: var(--text); font-weight: 500;">
+        Edit Knowledge Base Content
+      </label>
+      <textarea name="kb_data" rows="14" placeholder="Enter knowledge base entries...">{{ kb_content }}</textarea>
+      <div class="actions">
+        <button class="btn" type="submit">💾 Save Knowledge Base</button>
+      </div>
+    </form>
+
+    <h4>📤 Import from CSV</h4>
+    <form method="post" action="{{ url_for('admin_upload_kb_csv') }}" enctype="multipart/form-data">
+      <input type="file" name="csv_file" accept=".csv" required style="margin-bottom: 12px;">
+      <div class="actions">
+        <button class="btn" type="submit">⬆️ Upload CSV</button>
+      </div>
+      <small style="display: block; margin-top: 8px;">Required columns: keywords, answer_en, answer_hi, answer_ta</small>
+    </form>
+  </section>
+
+  <!-- User Management Section -->
+  <section class="admin-chats">
+    <h3>👥 User Management</h3>
+    <div style="overflow-x: auto;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in users %}
+            <tr>
+              <td><strong>{{ u.id }}</strong></td>
+              <td>{{ u.email }}</td>
+              <td>{{ u.name or '—' }}</td>
+              <td>
+                <span style="padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; background: {% if u.role == 'admin' %}var(--accent){% else %}var(--primary-light){% endif %}; color: var(--text);">
+                  {{ u.role|upper }}
+                </span>
+              </td>
+              <td>
+                {% if u.role != 'admin' %}
+                  <form method="post" action="{{ url_for('admin_delete_user', user_id=u.id) }}" style="margin: 0;">
+                    <button class="btn small danger" type="submit" onclick="return confirm('Are you sure you want to delete this user?')">
+                      🗑️ Delete
+                    </button>
+                  </form>
+                {% else %}
+                  <span style="color: var(--text-light); font-size: 12px;">Protected</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<!-- Recent Conversations Section -->
+<div style="background: var(--card); padding: 28px; border-radius: 20px; box-shadow: var(--shadow); border: 2px solid var(--border); margin-top: 32px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <h3 style="margin: 0;">💬 Recent Conversations</h3>
+    <form method="post" action="{{ url_for('admin_clear_chats') }}" onsubmit="return confirm('⚠️ Are you sure you want to delete ALL chat history? This action cannot be undone!');" style="margin: 0;">
+      <button class="btn danger" type="submit">🧹 Clear All Chat History</button>
+    </form>
+  </div>
+
+  <div style="overflow-x: auto;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>User Message</th>
+          <th>Bot Response</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in chats %}
+          <tr>
+            <td><strong>{{ c.user_id or 'Guest' }}</strong></td>
+            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              {{ c.user_message }}
+            </td>
+            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              {{ c.bot_response }}
+            </td>
+            <td style="white-space: nowrap; color: var(--text-light); font-size: 13px;">
+              {{ c.created_at }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

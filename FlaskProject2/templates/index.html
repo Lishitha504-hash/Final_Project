@@ -1,0 +1,131 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero-section">
+  <h2>🌾 Welcome to AI-AgroBot</h2>
+  <p>Your intelligent farming assistant powered by advanced AI. Get instant answers about crops, pests, soil management, and sustainable farming practices.</p>
+</div>
+
+<!-- Feature Cards -->
+<div class="features-grid">
+  <div class="feature-card">
+    <span class="feature-icon">🌱</span>
+    <h3>Crop Management</h3>
+    <p>Get expert advice on crop selection, planting schedules, and growth optimization for your region.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🐛</span>
+    <h3>Pest & Disease Control</h3>
+    <p>Identify pests and diseases quickly with AI-powered image analysis and receive treatment recommendations.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🌍</span>
+    <h3>Soil Analysis</h3>
+    <p>Understand your soil composition and get personalized fertilization and irrigation strategies.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">☁️</span>
+    <h3>Weather Insights</h3>
+    <p>Access weather-based farming recommendations and plan your activities for optimal results.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">💡</span>
+    <h3>Smart Tips</h3>
+    <p>Learn sustainable farming practices and modern agricultural techniques to boost productivity.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🌐</span>
+    <h3>Multi-Language Support</h3>
+    <p>Chat in your preferred language - English, Hindi, or Tamil. Agriculture knowledge for everyone!</p>
+  </div>
+</div>
+
+<!-- Main Chat Container -->
+<div class="container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h3>Your Profile</h3>
+    {% if current_user.is_authenticated %}
+      <p><strong>{{ current_user.name or current_user.email }}</strong></p>
+      <p>🌾 <strong>Crop:</strong> {{ current_user.primary_crop or "Not set" }}</p>
+      <p>📍 <strong>Region:</strong> {{ current_user.region or "Not set" }}</p>
+      <p>🗣️ <strong>Language:</strong> {{ current_user.preferred_language|upper or "EN" }}</p>
+      <a class="btn" href="{{ url_for('profile') }}">✏️ Edit Profile</a>
+    {% else %}
+      <p style="text-align: center; padding: 20px 0;">
+        <a href="{{ url_for('login') }}" class="btn" style="display: inline-block; margin-bottom: 12px;">🔐 Login</a>
+      </p>
+      <p style="text-align: center; color: var(--text-light); font-size: 14px;">Login to save your chat history and personalize your experience.</p>
+    {% endif %}
+
+    {% if recent_users %}
+      <hr>
+      <h4>👥 Recent Users</h4>
+      <ul class="user-list">
+        {% for u in recent_users %}
+          <li>
+            <a href="{{ url_for('admin_view_user', user_id=u.id) }}">
+              {{ u.email }} - {{ u.name or '—' }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </aside>
+
+  <!-- Chat Panel -->
+  <section class="chat-panel">
+    <div id="messages" class="messages" aria-live="polite">
+      <!-- Welcome message -->
+      <div class="message bot">
+        <div class="bubble">
+          <strong>🌾 Welcome to AI-AgroBot!</strong><br>
+          I'm here to help you with all your farming questions. You can ask me about:
+          <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+            <li>🌱 Best crops for your soil and region</li>
+            <li>🐛 Pest identification and control</li>
+            <li>💧 Irrigation and water management</li>
+            <li>🌾 Fertilization schedules</li>
+            <li>📷 Image analysis for diseases</li>
+          </ul>
+          <em style="color: var(--primary-dark); display: block; margin-top: 12px;">How can I assist you today?</em>
+        </div>
+      </div>
+    </div>
+
+    <form id="chatForm" class="chat-form" onsubmit="return false;">
+      <input
+        id="msg"
+        type="text"
+        aria-label="Type your question"
+        placeholder="Ask: 'What's the best soil for cotton?' or 'How to control aphids?'"
+        autocomplete="off"
+      >
+
+      <!-- Image Upload Button -->
+      <label for="imageInput" class="btn" style="cursor: pointer; white-space: nowrap;" title="Upload Image for Analysis">
+        📷 Image
+      </label>
+      <input type="file" id="imageInput" accept="image/*" style="display: none;">
+
+      <!-- Voice Input Button -->
+      <button id="voiceBtn" type="button" class="btn" title="Voice Input" style="white-space: nowrap;">
+        🎤 Voice
+      </button>
+
+      <!-- Send Button -->
+      <button id="sendBtn" type="button" class="btn" style="white-space: nowrap;">
+        🚀 Send
+      </button>
+    </form>
+  </section>
+</div>
+
+{% endblock %}

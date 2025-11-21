@@ -1,0 +1,116 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Chat Container -->
+<div class="container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h3>Your Profile</h3>
+    {% if current_user.is_authenticated %}
+      <p><strong>{{ current_user.name or current_user.email }}</strong></p>
+      <p>🌾 <strong>Crop:</strong> {{ current_user.primary_crop or "Not set" }}</p>
+      <p>📍 <strong>Region:</strong> {{ current_user.region or "Not set" }}</p>
+      <p>🗣️ <strong>Language:</strong> {{ current_user.preferred_language|upper or "EN" }}</p>
+      <a class="btn" href="{{ url_for('profile') }}">✏️ Edit Profile</a>
+    {% else %}
+      <p style="text-align: center; padding: 20px 0;">
+        <a href="{{ url_for('login') }}" class="btn" style="display: inline-block; margin-bottom: 12px;">🔐 Login</a>
+      </p>
+      <p style="text-align: center; color: var(--text-light); font-size: 14px;">Login to save your chat history and personalize your experience.</p>
+    {% endif %}
+
+    <hr>
+
+    <!-- Quick Tips -->
+    <h4 style="color: var(--secondary); font-size: 16px; margin-bottom: 12px; font-weight: 600;">💡 Quick Tips</h4>
+    <div style="background: var(--bg); padding: 12px; border-radius: 10px; font-size: 13px; line-height: 1.6; color: var(--text-light);">
+      <p style="margin: 0 0 8px 0;">• Be specific with your questions</p>
+      <p style="margin: 0 0 8px 0;">• Upload images for better analysis</p>
+      <p style="margin: 0 0 8px 0;">• Mention your crop and region</p>
+      <p style="margin: 0;">• Use voice input for convenience</p>
+    </div>
+
+    {% if recent_users %}
+      <hr>
+      <h4>👥 Recent Users</h4>
+      <ul class="user-list">
+        {% for u in recent_users %}
+          <li>
+            <a href="{{ url_for('admin_view_user', user_id=u.id) }}">
+              {{ u.email }} - {{ u.name or '—' }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <hr>
+
+    <!-- Back to Home -->
+    <a href="{{ url_for('home') }}" class="btn" style="width: 100%; background: linear-gradient(135deg, var(--secondary) 0%, #65a30d 100%);">
+      🏠 Back to Home
+    </a>
+  </aside>
+
+  <!-- Chat Panel -->
+  <section class="chat-panel">
+    <div id="messages" class="messages" aria-live="polite">
+      <!-- Welcome message -->
+      <div class="message bot">
+        <div class="bubble">
+          <strong>🌾 Welcome to AI-AgroBot Chat!</strong><br>
+          I'm your smart farming assistant. I can help you with:
+          <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+            <li>🌱 Crop selection and cultivation advice</li>
+            <li>🐛 Pest and disease identification</li>
+            <li>💧 Water and irrigation management</li>
+            <li>🌍 Soil health and fertilization</li>
+            <li>📷 Image-based plant diagnosis</li>
+            <li>☁️ Weather-based recommendations</li>
+          </ul>
+          <div style="margin-top: 16px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 3px solid var(--primary);">
+            <strong style="color: var(--primary-dark);">💬 Example Questions:</strong><br>
+            <em style="color: var(--text-light); font-size: 14px; line-height: 1.7;">
+              • "What's the best soil for cotton farming?"<br>
+              • "How do I control aphids on my tomato plants?"<br>
+              • "When should I plant wheat in Punjab?"<br>
+              • "My plant leaves are turning yellow, what should I do?"
+            </em>
+          </div>
+          <div style="margin-top: 12px; text-align: center;">
+            <strong style="color: var(--primary);">🎯 How can I help you today?</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="chatForm" class="chat-form" onsubmit="return false;">
+      <input
+        id="msg"
+        type="text"
+        aria-label="Type your question"
+        placeholder="Ask: 'What's the best soil for cotton?' or 'How to control aphids?'"
+        autocomplete="off"
+      >
+
+      <!-- Image Upload Button -->
+      <label for="imageInput" class="btn" style="cursor: pointer; white-space: nowrap;" title="Upload Image for Analysis">
+        📷 Image
+      </label>
+      <input type="file" id="imageInput" accept="image/*" style="display: none;">
+
+      <!-- Voice Input Button -->
+      <button id="voiceBtn" type="button" class="btn" title="Voice Input" style="white-space: nowrap;">
+        🎤 Voice
+      </button>
+
+      <!-- Send Button -->
+      <button id="sendBtn" type="button" class="btn" style="white-space: nowrap;">
+        🚀 Send
+      </button>
+    </form>
+  </section>
+</div>
+
+{% endblock %}

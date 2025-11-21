@@ -1,0 +1,47 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-card">
+  <div style="text-align: center; margin-bottom: 24px;">
+    <span style="font-size: 64px;">👤</span>
+  </div>
+  <h2>Your Profile</h2>
+  <p style="text-align: center; color: var(--text-light); margin-bottom: 28px;">
+    Update your information to get personalized farming recommendations
+  </p>
+
+  <form method="post">
+    <label>
+      👤 Full Name
+      <input name="name" value="{{ current_user.name or '' }}" placeholder="Enter your full name">
+    </label>
+
+    <label>
+      🌾 Primary Crop
+      <input name="primary_crop" value="{{ current_user.primary_crop or '' }}" placeholder="e.g., Rice, Wheat, Cotton">
+    </label>
+
+    <label>
+      📍 Region/Location
+      <input name="region" value="{{ current_user.region or '' }}" placeholder="e.g., Punjab, Maharashtra">
+    </label>
+
+    <label>
+      🗣️ Preferred Language
+      <select name="preferred_language">
+        <option value="en" {% if current_user.preferred_language=='en' %}selected{% endif %}>English</option>
+        <option value="hi" {% if current_user.preferred_language=='hi' %}selected{% endif %}>हिंदी (Hindi)</option>
+        <option value="ta" {% if current_user.preferred_language=='ta' %}selected{% endif %}>தமிழ் (Tamil)</option>
+      </select>
+    </label>
+
+    <div class="actions">
+      <button class="btn" type="submit" style="flex: 1;">💾 Save Changes</button>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="{{ url_for('home') }}" style="color: var(--primary); text-decoration: none; font-weight: 600;">← Back to Chat</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

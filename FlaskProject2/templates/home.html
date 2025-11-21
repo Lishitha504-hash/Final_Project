@@ -1,0 +1,128 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero-section">
+  <h2>🌾 Welcome to AI-AgroBot</h2>
+  <p>Your intelligent farming assistant powered by advanced AI. Get instant answers about crops, pests, soil management, and sustainable farming practices.</p>
+  <div style="margin-top: 28px;">
+    <a href="{{ url_for('chat') }}" class="btn" style="display: inline-block; padding: 14px 32px; font-size: 16px; text-decoration: none;">
+      💬 Start Chatting Now
+    </a>
+    {% if not current_user.is_authenticated %}
+      <a href="{{ url_for('register') }}" class="btn" style="display: inline-block; padding: 14px 32px; font-size: 16px; text-decoration: none; margin-left: 12px; background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);">
+        ✨ Create Free Account
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Feature Cards -->
+<div class="features-grid">
+  <div class="feature-card">
+    <span class="feature-icon">🌱</span>
+    <h3>Crop Management</h3>
+    <p>Get expert advice on crop selection, planting schedules, and growth optimization for your region. Learn the best practices for maximum yield.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🐛</span>
+    <h3>Pest & Disease Control</h3>
+    <p>Identify pests and diseases quickly with AI-powered image analysis and receive instant treatment recommendations to protect your crops.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🌍</span>
+    <h3>Soil Analysis</h3>
+    <p>Understand your soil composition and get personalized fertilization and irrigation strategies for healthier crops and better productivity.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">☁️</span>
+    <h3>Weather Insights</h3>
+    <p>Access weather-based farming recommendations and plan your agricultural activities for optimal results throughout the season.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">💡</span>
+    <h3>Smart Tips</h3>
+    <p>Learn sustainable farming practices and modern agricultural techniques to boost productivity while protecting the environment.</p>
+  </div>
+
+  <div class="feature-card">
+    <span class="feature-icon">🌐</span>
+    <h3>Multi-Language Support</h3>
+    <p>Chat in your preferred language - English, Hindi, or Tamil. Agriculture knowledge accessible to everyone, everywhere!</p>
+  </div>
+</div>
+
+<!-- How It Works Section -->
+<div style="background: var(--card); padding: 48px 32px; border-radius: 24px; box-shadow: var(--shadow); border: 2px solid var(--border); margin-top: 40px; text-align: center;">
+  <h2 style="color: var(--primary-dark); margin-bottom: 16px; font-size: 32px;">🚀 How It Works</h2>
+  <p style="color: var(--text-light); font-size: 16px; max-width: 700px; margin: 0 auto 40px auto;">
+    Get started with AI-AgroBot in three simple steps
+  </p>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 32px; margin-top: 40px;">
+    <div>
+      <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; color: white; font-weight: 700; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">
+        1
+      </div>
+      <h3 style="color: var(--primary-dark); margin-bottom: 12px;">Sign Up</h3>
+      <p style="color: var(--text-light); font-size: 15px;">Create your free account and set up your farming profile with your crops and region.</p>
+    </div>
+
+    <div>
+      <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; color: white; font-weight: 700; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">
+        2
+      </div>
+      <h3 style="color: var(--primary-dark); margin-bottom: 12px;">Ask Questions</h3>
+      <p style="color: var(--text-light); font-size: 15px;">Type your farming questions or upload images of crops, pests, or diseases for instant analysis.</p>
+    </div>
+
+    <div>
+      <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; color: white; font-weight: 700; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">
+        3
+      </div>
+      <h3 style="color: var(--primary-dark); margin-bottom: 12px;">Get Smart Solutions</h3>
+      <p style="color: var(--text-light); font-size: 15px;">Receive personalized, AI-powered recommendations to improve your farming practices.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Statistics Section -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 40px;">
+  <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 32px; border-radius: 20px; text-align: center; color: white; box-shadow: var(--shadow-lg);">
+    <div style="font-size: 42px; font-weight: 800; margin-bottom: 8px;">24/7</div>
+    <div style="font-size: 16px; opacity: 0.95;">Always Available</div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, var(--secondary) 0%, #65a30d 100%); padding: 32px; border-radius: 20px; text-align: center; color: white; box-shadow: var(--shadow-lg);">
+    <div style="font-size: 42px; font-weight: 800; margin-bottom: 8px;">Regional</div>
+    <div style="font-size: 16px; opacity: 0.95;">Languages Supported</div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, var(--accent) 0%, #f59e0b 100%); padding: 32px; border-radius: 20px; text-align: center; color: white; box-shadow: var(--shadow-lg);">
+    <div style="font-size: 42px; font-weight: 800; margin-bottom: 8px;">🤖</div>
+    <div style="font-size: 16px; opacity: 0.95;">AI-Powered Insights</div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, #059669 0%, #047857 100%); padding: 32px; border-radius: 20px; text-align: center; color: white; box-shadow: var(--shadow-lg);">
+    <div style="font-size: 42px; font-weight: 800; margin-bottom: 8px;">📸</div>
+    <div style="font-size: 16px; opacity: 0.95;">Image Analysis</div>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(132, 204, 22, 0.1) 100%); padding: 48px 32px; border-radius: 24px; margin-top: 40px; text-align: center; border: 2px solid var(--border);">
+  <h2 style="color: var(--primary-dark); margin-bottom: 16px; font-size: 32px;">🌾 Ready to Transform Your Farming?</h2>
+  <p style="color: var(--text-light); font-size: 18px; max-width: 700px; margin: 0 auto 32px auto;">
+    Join thousands of farmers who are already using AI-AgroBot to make smarter farming decisions.
+  </p>
+  <a href="{{ url_for('chat') }}" class="btn" style="display: inline-block; padding: 16px 40px; font-size: 18px; text-decoration: none; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);">
+    💬 Start Your Journey Today
+  </a>
+</div>
+
+{% endblock %}
